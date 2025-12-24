@@ -104,6 +104,11 @@
         a:hover {
             color: #00d4ff;
         }
+
+        .loading {
+            color: #6b8cae;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -118,14 +123,100 @@
     </header>
 
     <main>
-        <div class="blog-entries">
-            <div class="blog-entry">
-                <span class="blog-date">24 Dec, 2025</span>
-                <span class="blog-title">coming soon</span>
+        <div class="blog-entries" id="blog-entries">
+            <div class="blog-entry loading">
+                <span class="blog-date">loading...</span>
+                <span class="blog-title">fetching posts</span>
             </div>
         </div>
     </main>
 
+    <script>
+        // Function to fetch and display blog posts
+        async function loadBlogPosts() {
+            const blogContainer = document.getElementById('blog-entries');
+            
+            try {
+                // Fetch the posts directory listing from GitHub API
+                const response = await fetch('https://api.github.com/repos/Shreshth1x/shreshthsaride-website/contents/posts');
+                const files = await response.json();
+                
+                // Filter for markdown files
+                const posts = files.filter(file => file.name.endsWith('.md'));
+                
+                if (posts.length === 0) {
+                    blogContainer.innerHTML = `
+                        <div class="blog-entry">
+                            <span class="blog-date">24 Dec, 2025</span>
+                            <span class="blog-title">coming soon</span>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Fetch content of each post
+                const postPromises = posts.map(async (post) => {
+                    const contentResponse = await fetch(post.download_url);
+                    const content = await contentResponse.text();
+                    
+                    // Parse frontmatter
+                    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+                    if (frontmatterMatch) {
+                        const frontmatter = frontmatterMatch[1];
+                        const titleMatch = frontmatter.match(/title:\s*["']?(.+?)["']?\n/);
+                        const dateMatch = frontmatter.match(/date:\s*(.+)/);
+                        
+                        const title = titleMatch ? titleMatch[1] : 'Untitled';
+                        const date = dateMatch ? new Date(dateMatch[1]) : new Date();
+                        
+                        // Create slug from filename
+                        const slug = post.name.replace('.md', '');
+                        
+                        return {
+                            title,
+                            date,
+                            slug,
+                            filename: post.name
+                        };
+                    }
+                    return null;
+                });
+                
+                const postsData = (await Promise.all(postPromises)).filter(p => p !== null);
+                
+                // Sort by date (newest first)
+                postsData.sort((a, b) => b.date - a.date);
+                
+                // Display posts
+                blogContainer.innerHTML = postsData.map(post => {
+                    const formattedDate = post.date.toLocaleDateString('en-US', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric'
+                    });
+                    
+                    return `
+                        <div class="blog-entry">
+                            <span class="blog-date">${formattedDate}</span>
+                            <span class="blog-title"><a href="post.html?slug=${post.slug}">${post.title}</a></span>
+                        </div>
+                    `;
+                }).join('');
+                
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                blogContainer.innerHTML = `
+                    <div class="blog-entry">
+                        <span class="blog-date">24 Dec, 2025</span>
+                        <span class="blog-title">coming soon</span>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load posts when page loads
+        loadBlogPosts();
+    </script>
+
 </body>
 </html>
-
