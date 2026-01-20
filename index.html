@@ -195,6 +195,50 @@
             color: var(--accent-yellow);
         }
 
+        /* ========================================
+           MOBILE-SPECIFIC HERO ADJUSTMENTS
+           ======================================== */
+
+        /* Tablet and below */
+        @media (max-width: 767px) {
+            .avatar-card {
+                display: none; /* Hide avatar on mobile for cleaner layout */
+            }
+
+            .character-info {
+                transform: none;
+                text-align: center;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .character-name {
+                transform: none;
+                font-size: 1.5rem;
+                white-space: normal;
+            }
+
+            .achievements-list {
+                text-align: left;
+                padding-left: var(--space-md);
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .character-name {
+                font-size: 1.25rem;
+            }
+
+            .achievement-item {
+                font-size: 1rem;
+            }
+
+            .character-section {
+                padding: 0 var(--space-sm);
+            }
+        }
+
     </style>
 </head>
 <body>

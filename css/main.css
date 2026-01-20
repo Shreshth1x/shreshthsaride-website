@@ -55,6 +55,7 @@
   /* Layout */
   --container-width: 1000px;
   --nav-height: 70px;
+  --nav-height-mobile: 60px;
 
   /* Parallax Positioning */
   --grass-line-offset: 42vh;

@@ -242,3 +242,17 @@
   font-size: 1rem;
   color: var(--text-muted);
 }
+
+/* ========================================
+   MOBILE NAV HEIGHT ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 767px) {
+  .game-nav {
+    height: var(--nav-height-mobile, 60px);
+  }
+
+  .mobile-menu {
+    top: var(--nav-height-mobile, 60px);
+  }
+}
