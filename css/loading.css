@@ -1,0 +1,263 @@
+/* ========================================
+   LOADING SCREEN
+   Retro Game HUD Style
+   ======================================== */
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-container {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+/* Bouncing Character */
+.loading-character {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--space-xl);
+  position: relative;
+}
+
+.loading-character::before {
+  content: '';
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background: var(--accent-yellow);
+  border-radius: 4px;
+  animation: character-bounce 0.6s ease-in-out infinite;
+  box-shadow:
+    inset -8px -8px 0 rgba(0,0,0,0.2),
+    inset 8px 8px 0 rgba(255,255,255,0.1);
+}
+
+/* Character shadow */
+.loading-character::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 8px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 50%;
+  animation: shadow-scale 0.6s ease-in-out infinite;
+}
+
+@keyframes character-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-30px) scale(1.1, 0.9);
+  }
+}
+
+@keyframes shadow-scale {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.6);
+    opacity: 0.15;
+  }
+}
+
+/* Title */
+.loading-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+  text-shadow: 4px 4px 0 var(--shadow-color);
+  letter-spacing: 3px;
+}
+
+@media (min-width: 768px) {
+  .loading-title {
+    font-size: 2rem;
+  }
+}
+
+/* Progress Bar Container */
+.progress-bar-container {
+  width: 280px;
+  margin: 0 auto var(--space-lg);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .progress-bar-container {
+    width: 350px;
+  }
+}
+
+/* Progress Bar Background */
+.progress-bar-bg {
+  height: 32px;
+  background: var(--bg-medium);
+  border: 4px solid var(--accent-cyan);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Progress Bar Fill */
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    var(--accent-green) 0%,
+    var(--accent-yellow) 50%,
+    var(--accent-green) 100%
+  );
+  background-size: 200% 100%;
+  animation: gradient-shift 1s linear infinite;
+  transition: width 0.15s steps(10);
+  position: relative;
+}
+
+/* Shine effect on progress bar */
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: rgba(255,255,255,0.2);
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+/* Progress Segments (decorative) */
+.progress-segments {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  display: flex;
+  pointer-events: none;
+}
+
+.progress-segment {
+  flex: 1;
+  border-right: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.progress-segment:last-child {
+  border-right: none;
+}
+
+/* Loading Text */
+.loading-text {
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-md);
+  letter-spacing: 2px;
+}
+
+/* Blinking Cursor */
+.blink-cursor {
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Loading Tip */
+.loading-tip {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  max-width: 300px;
+  margin: 0 auto;
+  min-height: 2.5em;
+  transition: opacity 0.3s ease;
+}
+
+/* Press Start Text (appears when loaded) */
+.press-start {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.75rem;
+  color: var(--accent-yellow);
+  margin-top: var(--space-lg);
+  animation: press-start-blink 1s ease-in-out infinite;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.press-start.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes press-start-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Corner decorations (game UI style) */
+.loading-corner {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--accent-cyan);
+}
+
+.loading-corner--tl {
+  top: 20px;
+  left: 20px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.loading-corner--tr {
+  top: 20px;
+  right: 20px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.loading-corner--bl {
+  bottom: 20px;
+  left: 20px;
+  border-right: none;
+  border-top: none;
+}
+
+.loading-corner--br {
+  bottom: 20px;
+  right: 20px;
+  border-left: none;
+  border-top: none;
+}

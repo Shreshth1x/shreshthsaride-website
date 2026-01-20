@@ -1,0 +1,274 @@
+/* ========================================
+   GAMIFIED PERSONAL WEBSITE - MAIN STYLES
+   Inspired by Crossy Road & Habitica
+   ======================================== */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Mono:wght@400;700&display=swap');
+
+/* ========================================
+   CSS VARIABLES
+   ======================================== */
+:root {
+  /* Background Colors */
+  --bg-dark: #1a1a2e;
+  --bg-medium: #16213e;
+  --bg-light: #0f3460;
+  --bg-card: rgba(15, 52, 96, 0.7);
+
+  /* Primary Accents */
+  --accent-green: #53e837;
+  --accent-yellow: #ffd93d;
+  --accent-cyan: #4cc9f0;
+  --accent-pink: #f72585;
+  --accent-purple: #7209b7;
+  --accent-orange: #ff6b35;
+
+  /* Game UI Colors */
+  --health-red: #e63946;
+  --xp-blue: #4895ef;
+  --mana-purple: #9d4edd;
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #a8dadc;
+  --text-muted: #6b8cae;
+  --text-accent: #ffd93d;
+
+  /* Shadow */
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --shadow-glow: rgba(76, 201, 240, 0.3);
+
+  /* Spacing (8px grid) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Layout */
+  --container-width: 1000px;
+  --nav-height: 70px;
+
+  /* Parallax Positioning */
+  --grass-line-offset: 42vh;
+  --sprite-height-offset: 0px;
+}
+
+/* ========================================
+   CSS RESET
+   ======================================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: 'Space Mono', monospace;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Pixel-perfect rendering for pixel art */
+img,
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+/* Pixel Headers - Press Start 2P */
+.pixel-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 4px 4px 0 var(--shadow-color);
+  line-height: 1.4;
+}
+
+.pixel-title-sm {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 var(--shadow-color);
+}
+
+/* Game UI Text - VT323 */
+.game-text {
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.game-text-sm {
+  font-family: 'VT323', monospace;
+  font-size: 1.25rem;
+}
+
+/* Body Text - Space Mono */
+.body-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Press Start 2P', cursive;
+  line-height: 1.4;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.25rem; }
+h3 { font-size: 1rem; }
+h4 { font-size: 0.875rem; }
+
+@media (min-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+}
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.page-wrapper {
+  padding-top: calc(var(--nav-height) + var(--space-xl));
+  padding-bottom: var(--space-2xl);
+  min-height: 100vh;
+}
+
+/* ========================================
+   LINKS
+   ======================================== */
+a {
+  color: var(--accent-cyan);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-yellow);
+}
+
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-light);
+  border: 2px solid var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* ========================================
+   SELECTION
+   ======================================== */
+::selection {
+  background: var(--accent-cyan);
+  color: var(--bg-dark);
+}
+
+/* ========================================
+   FOCUS STATES (Accessibility)
+   ======================================== */
+:focus-visible {
+  outline: 3px solid var(--accent-yellow);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   SKIP LINK (Accessibility)
+   ======================================== */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-md);
+  background: var(--accent-yellow);
+  color: var(--bg-dark);
+  padding: var(--space-sm) var(--space-md);
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.75rem;
+  z-index: 9999;
+  border-radius: var(--radius-sm);
+}
+
+.skip-link:focus {
+  top: var(--space-md);
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-accent { color: var(--accent-yellow); }
+.text-cyan { color: var(--accent-cyan); }
+.text-green { color: var(--accent-green); }
+.text-pink { color: var(--accent-pink); }
+
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

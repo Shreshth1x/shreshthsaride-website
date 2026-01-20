@@ -1,0 +1,426 @@
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+/* ========================================
+   FLOATING ELEMENTS
+   ======================================== */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-15px) translateX(5px);
+  }
+  50% {
+    transform: translateY(-8px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-20px) translateX(3px);
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-delay-1 { animation-delay: -1.5s; }
+.float-delay-2 { animation-delay: -3s; }
+.float-delay-3 { animation-delay: -4.5s; }
+
+/* ========================================
+   GLOW EFFECTS
+   ======================================== */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--accent-cyan), 0 0 10px transparent;
+  }
+  50% {
+    box-shadow: 0 0 15px var(--accent-cyan), 0 0 30px var(--accent-cyan);
+  }
+}
+
+.glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes text-glow {
+  0%, 100% {
+    text-shadow: 0 0 5px var(--accent-cyan);
+  }
+  50% {
+    text-shadow: 0 0 20px var(--accent-cyan), 0 0 30px var(--accent-cyan);
+  }
+}
+
+.text-glow {
+  animation: text-glow 2s ease-in-out infinite;
+}
+
+/* ========================================
+   PAGE TRANSITIONS
+   ======================================== */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fade-in-up 0.5s ease forwards;
+}
+
+@keyframes pixel-fade-in {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+.pixel-fade-in {
+  animation: pixel-fade-in 0.4s ease forwards;
+}
+
+/* ========================================
+   SLIDE ANIMATIONS
+   ======================================== */
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-left {
+  animation: slide-in-left 0.4s ease forwards;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-right {
+  animation: slide-in-right 0.4s ease forwards;
+}
+
+/* ========================================
+   STAGGER ANIMATIONS
+   ======================================== */
+.stagger-item {
+  opacity: 0;
+  animation: fade-in-up 0.4s ease forwards;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0.1s; }
+.stagger-item:nth-child(2) { animation-delay: 0.2s; }
+.stagger-item:nth-child(3) { animation-delay: 0.3s; }
+.stagger-item:nth-child(4) { animation-delay: 0.4s; }
+.stagger-item:nth-child(5) { animation-delay: 0.5s; }
+.stagger-item:nth-child(6) { animation-delay: 0.6s; }
+.stagger-item:nth-child(7) { animation-delay: 0.7s; }
+.stagger-item:nth-child(8) { animation-delay: 0.8s; }
+.stagger-item:nth-child(9) { animation-delay: 0.9s; }
+.stagger-item:nth-child(10) { animation-delay: 1s; }
+
+/* ========================================
+   BOUNCE
+   ======================================== */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.bounce {
+  animation: bounce 0.6s ease-in-out infinite;
+}
+
+@keyframes bounce-sm {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.bounce-sm {
+  animation: bounce-sm 1s ease-in-out infinite;
+}
+
+/* ========================================
+   PULSE
+   ======================================== */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.5;
+  }
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+/* ========================================
+   SPIN
+   ======================================== */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 3s linear infinite;
+}
+
+.spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+/* ========================================
+   TYPEWRITER
+   ======================================== */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes cursor-blink {
+  0%, 50% { border-color: var(--accent-cyan); }
+  51%, 100% { border-color: transparent; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--accent-cyan);
+  animation:
+    typewriter 2s steps(30) forwards,
+    cursor-blink 0.7s step-end infinite;
+}
+
+/* ========================================
+   SHAKE (for errors/attention)
+   ======================================== */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+
+/* ========================================
+   FLOATING BACKGROUND ELEMENTS
+   ======================================== */
+.floating-elements {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.floating-cube {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--accent-cyan);
+  opacity: 0.1;
+  animation: float 8s ease-in-out infinite;
+}
+
+.floating-cube:nth-child(1) {
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+  background: var(--accent-pink);
+}
+
+.floating-cube:nth-child(2) {
+  top: 20%;
+  right: 15%;
+  animation-delay: -2s;
+  background: var(--accent-yellow);
+  width: 30px;
+  height: 30px;
+}
+
+.floating-cube:nth-child(3) {
+  top: 60%;
+  left: 5%;
+  animation-delay: -4s;
+  background: var(--accent-green);
+  width: 15px;
+  height: 15px;
+}
+
+.floating-cube:nth-child(4) {
+  top: 80%;
+  right: 10%;
+  animation-delay: -1s;
+  background: var(--accent-purple);
+  width: 25px;
+  height: 25px;
+}
+
+.floating-cube:nth-child(5) {
+  top: 40%;
+  left: 80%;
+  animation-delay: -3s;
+  background: var(--accent-orange);
+}
+
+.floating-cube:nth-child(6) {
+  top: 70%;
+  left: 30%;
+  animation-delay: -5s;
+  background: var(--accent-cyan);
+  width: 12px;
+  height: 12px;
+}
+
+/* ========================================
+   HOVER LIFT
+   ======================================== */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+   PIXEL BORDER ANIMATION
+   ======================================== */
+@keyframes border-march {
+  0% { background-position: 0 0, 100% 0, 100% 100%, 0 100%; }
+  100% { background-position: 20px 0, 100% 20px, calc(100% - 20px) 100%, 0 calc(100% - 20px); }
+}
+
+.border-march {
+  background:
+    linear-gradient(90deg, var(--accent-cyan) 50%, transparent 50%) repeat-x,
+    linear-gradient(90deg, var(--accent-cyan) 50%, transparent 50%) repeat-x,
+    linear-gradient(0deg, var(--accent-cyan) 50%, transparent 50%) repeat-y,
+    linear-gradient(0deg, var(--accent-cyan) 50%, transparent 50%) repeat-y;
+  background-size: 10px 3px, 10px 3px, 3px 10px, 3px 10px;
+  background-position: 0 0, 100% 100%, 0 100%, 100% 0;
+  animation: border-march 0.5s linear infinite;
+}
+
+/* ========================================
+   ENTRY ANIMATIONS FOR SECTIONS
+   ======================================== */
+.section-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   SCROLL INDICATOR
+   ======================================== */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 30;
+  cursor: pointer;
+}
+
+.scroll-text {
+  display: block;
+  font-family: 'VT323', monospace;
+  font-size: 1.25rem;
+  color: var(--accent-cyan);
+  margin-bottom: var(--space-sm);
+  text-shadow: 2px 2px 0 var(--shadow-color);
+  opacity: 0.9;
+  letter-spacing: 2px;
+}
+
+.scroll-arrow {
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+  border-left: 4px solid var(--accent-cyan);
+  border-bottom: 4px solid var(--accent-cyan);
+  transform: rotate(-45deg);
+  animation: bounce-arrow 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce-arrow {
+  0%, 100% {
+    transform: rotate(-45deg) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(-45deg) translateY(12px);
+    opacity: 0.5;
+  }
+}
+
+/* Hide scroll indicator after scrolling */
+.scroll-indicator.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}

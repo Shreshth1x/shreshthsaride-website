@@ -3,149 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shreshth's Blog</title>
+    <title>Shreshth Saride | Finance, Esports, Founder</title>
+    <meta name="description" content="Personal website of Shreshth Saride - Finance + Math at UT Austin, Competitive Esports Player, Founder & CEO of Speakl.">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Netlify Identity -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ========================================
+           SECTION-BASED BACKGROUND SYSTEM
+           ======================================== */
+
+        /* About Page - Single viewport with background */
+        .about-page {
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: url('images/background.jpg') no-repeat center center;
+            background-size: cover;
         }
 
-        body {
-            background-color: #000000;
-            color: #b3d4ff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
+        /* ========================================
+           HERO LANDING SECTION (100vh)
+           ======================================== */
+
+        /* Hero section - shows sky/top portion of background */
+        .hero-landing {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: var(--nav-height);
+            padding-bottom: var(--space-md);
+        }
+
+        /* Overlay for hero section text readability */
+        .hero-landing::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(26, 26, 46, 0.2) 0%,
+                rgba(26, 26, 46, 0.15) 50%,
+                rgba(26, 26, 46, 0.35) 100%
+            );
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-landing > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Character Section - centered content */
+        .character-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             max-width: 800px;
             margin: 0 auto;
-            padding: 30px 30px;
-            min-height: 100vh;
+            padding: 0 var(--space-md);
         }
 
-        header {
-            margin-bottom: 40px;
+        /* Avatar Card - Fixed to bottom */
+        .avatar-card {
+            position: fixed;
+            bottom: 0;
+            left: -96px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
         }
 
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+        .avatar-header {
+            margin-bottom: var(--space-sm);
         }
 
-        header h1 a {
-            color: #4a9eff;
-            text-decoration: none;
+        .sprite-container {
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: -60px;
         }
 
-        nav {
-            font-size: 1.4em;
-            color: #6b8cae;
-            margin-bottom: 0;
-        }
-
-        nav a {
-            color: #5eb3f6;
-            text-decoration: none;
-            transition: color 0.2s ease;
-            margin-right: 20px;
-        }
-
-        nav a:hover {
-            color: #00d4ff;
-        }
-
-        main {
-            margin-bottom: 0;
-        }
-
-        .hero {
-            margin-bottom: 0;
-        }
-
-        .hero h2 {
-            font-size: 2.5em;
-            color: #ffffff;
-            font-weight: 700;
-            margin: 0 0 20px 0;
-            line-height: 1.3;
-            text-transform: lowercase;
-            font-style: italic;
-        }
-
-        .hero h3 {
-            font-size: 1.2em;
-            color: #b3d4ff;
-            font-weight: 400;
-            line-height: 1.5;
-            margin: 0 0 30px 0;
-            text-transform: lowercase;
-        }
-
-        .hero h3 a {
-            color: #b3d4ff;
-            text-decoration: underline;
-            transition: color 0.2s ease;
-            font-style: italic;
-        }
-
-        .hero h3 a:hover {
-            color: #00d4ff;
-        }
-
-        .content-image {
-            max-width: 745px;
-            max-height: calc(100vh - 400px);
-            width: auto;
+        /* Character Sprite GIF */
+        .character-sprite {
+            width: 200px;
             height: auto;
-            margin: 0;
-            padding: 0;
             display: block;
-            border-radius: 8px;
-            object-fit: contain;
+            transform: translateZ(0);
+            will-change: contents;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
         }
 
-        a {
-            color: #5eb3f6;
+        .character-class {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .character-level {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.625rem;
+            padding: var(--space-xs) var(--space-sm);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Character Info - Right aligned */
+        .character-info {
+            padding: var(--space-sm) 0;
+            text-align: left;
+            margin-left: auto;
+            margin-right: 1%;
+            max-width: 500px;
+            transform: translateX(192px);
+        }
+
+        .character-name {
+            font-size: 2rem;
+            color: var(--text-primary);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.5), 6px 6px 0 var(--shadow-color);
+            margin-bottom: var(--space-lg);
+            white-space: nowrap;
+            transform: translate(-200px, -50px);
+        }
+
+        @media (min-width: 768px) {
+            .character-name {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Achievements Section */
+        .achievements-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+
+        .achievement-item {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.25rem;
+            color: #ffffff;
+            margin-bottom: var(--space-sm);
+            text-shadow: 2px 2px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.7);
+            line-height: 1.6;
+        }
+
+        @media (min-width: 768px) {
+            .achievement-item {
+                font-size: 1.5rem;
+            }
+        }
+
+        .achievement-item a {
+            color: var(--accent-cyan);
             text-decoration: none;
-            transition: color 0.2s ease;
         }
 
-        a:hover {
-            color: #00d4ff;
+        .achievement-item a:hover {
+            color: var(--accent-yellow);
         }
+
     </style>
 </head>
 <body>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header>
-            <h1><a href="index.html">Shreshth Saride</a></h1>
-        <nav>
-            <a href="index.html">home</a>
-            <a href="blog.html">blog</a>
-            <a href="timeline.html">timeline</a>
-        </nav>
-    </header>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-corner loading-corner--tl"></div>
+        <div class="loading-corner loading-corner--tr"></div>
+        <div class="loading-corner loading-corner--bl"></div>
+        <div class="loading-corner loading-corner--br"></div>
 
-    <main>
-        <div class="hero">
-            <h2>time is passing anyway</h2>
-            <h3>my name is shreshth, and i'm trying to become <a href="https://www.google.com/search?q=what+does+shreshth+mean%3F+&sca_esv=adf8ac1c25cd0a81&sxsrf=AE3TifPhfaJhFZ85xfbOVoU65oxtiRxcIg%3A1766542698412&ei=ak1LaY3yGMbOkPIP7peG8Qg&ved=0ahUKEwiNz5OwlNWRAxVGJ0QIHe6LIY4Q4dUDCBE&uact=5&oq=what+does+shreshth+mean%3F+&gs_lp=Egxnd3Mtd2l6LXNlcnAiGXdoYXQgZG9lcyBzaHJlc2h0aCBtZWFuPyAyCBAAGBYYChgeMggQABiiBBiJBTIIEAAYogQYiQUyCBAAGIAEGKIEMggQABiABBiiBEiUKFDmEFiNJ3ADeAGQAQCYAWqgAfYRqgEEMjUuMrgBA8gBAPgBAZgCHqAC_RLCAgoQABiwAxjWBBhHwgIQECMY8AUYgAQYJxjJAhiKBcICChAjGIAEGCcYigXCAgsQABiABBiRAhiKBcICERAuGIAEGLEDGNEDGIMBGMcBwgILEAAYgAQYsQMYgwHCAgsQLhiABBixAxiDAcICChAAGIAEGEMYigXCAhAQLhiABBjRAxhDGMcBGIoFwgIFEAAYgATCAgwQABiABBhDGIoFGArCAgQQIxgnwgIOEAAYgAQYsQMYgwEYigXCAg4QLhiABBixAxjRAxjHAcICDRAAGIAEGEMYyQMYigXCAgoQABiABBgUGIcCwgILEAAYgAQYkgMYigXCAggQABiABBixA8ICBhAAGBYYHsICBxAAGIAEGArCAgsQABiABBiGAxiKBcICBxAAGIAEGA3CAgYQABgNGB7CAggQABgIGA0YHsICCRAAGIAEGAoYDcICBRAhGKABmAMAiAYBkAYHkgcEMjcuM6AH58wBsgcEMjQuM7gH6RLCBwcwLjEwLjIwyAdhgAgA&sclient=gws-wiz-serp" target="_blank" rel="noopener noreferrer">me</a></h3>
-            <img src="mockpanel.jpg" alt="I bet my life!" class="content-image">
+        <div class="loading-container">
+            <div class="loading-character"></div>
+            <h1 class="loading-title">SHRESHTH.EXE</h1>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-segments">
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                    <div class="progress-segment"></div>
+                </div>
+            </div>
+
+            <p class="loading-text">LOADING<span class="blink-cursor">_</span></p>
+            <p class="loading-tip" id="loading-tip">TIP: Explore the Projects page!</p>
+            <p class="press-start" id="press-start">PRESS ANY KEY TO START</p>
         </div>
+    </div>
+
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="game-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">S</div>
+                <span class="logo-text">SHRESHTH</span>
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link" data-page="index">ABOUT</a></li>
+                <li><a href="projects.html" class="nav-link" data-page="projects">PROJECTS</a></li>
+                <li><a href="blog.html" class="nav-link" data-page="blog">BLOG</a></li>
+            </ul>
+
+            <div class="nav-stats">
+                <span class="stat-badge">LVL 20</span>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">ABOUT</a></li>
+            <li><a href="projects.html" class="nav-link">PROJECTS</a></li>
+            <li><a href="blog.html" class="nav-link">BLOG</a></li>
+        </ul>
+        <div class="mobile-menu-decor">
+            <p class="pixel-text">time is passing anyway</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="about-page">
+        <!-- Hero Landing Section -->
+        <section class="hero-landing">
+            <!-- Character Section -->
+            <div class="character-section section-animate">
+            <div class="avatar-card">
+                <p class="character-class">Builder | Creator | Gamer</p>
+                <span class="character-level">LVL 20</span>
+                <div class="sprite-container">
+                    <img src="images/sprite.gif?v=2" alt="Shreshth's animated avatar" class="character-sprite">
+                </div>
+            </div>
+
+            <div class="character-info">
+                <h1 class="character-name">SHRESHTH SARIDE</h1>
+
+                <ul class="achievements-list">
+                    <li class="achievement-item">- <a href="https://www.linkedin.com/in/shreshthsaride/" target="_blank" rel="noopener noreferrer">Finance + Math</a> @ UT Austin</li>
+                    <li class="achievement-item">- Incoming @ JPMorgan</li>
+                    <li class="achievement-item">- Founder & CEO of <a href="https://speakl.ai/" target="_blank" rel="noopener noreferrer">Speakl</a></li>
+                    <li class="achievement-item">- Strategy Intern @ <a href="https://www.ekuso.gg/" target="_blank" rel="noopener noreferrer"> Ekuso</a></li>
+                    <li class="achievement-item">- VP @ <a href="https://www.texasucg.com/" target="_blank" rel="noopener noreferrer"> TexasUCG</a></li>
+                    <li class="achievement-item">- Founder @ Texas Esports</li>
+                    <li class="achievement-item">- Competitive Esports Player</li>
+                </ul>
+            </div>
+        </div>
+
+        </section>
+
     </main>
 
+    <!-- Scripts -->
+    <script src="js/loading.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/parallax.js"></script>
+
+    <!-- Netlify Identity Redirect -->
     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
             });
-          }
-        });
-      }
+        }
     </script>
 </body>
 </html>

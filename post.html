@@ -3,319 +3,497 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="post-title">Blog Post - Shreshth's Blog</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <title id="post-title">Quest Log | Shreshth Saride</title>
+    <meta name="description" content="Read this quest from Shreshth Saride's adventure log.">
 
-        body {
-            background-color: #000000;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 2.0;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 30px 30px;
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Marked.js for Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        /* Post Page Specific Styles */
+        .post-page {
+            padding-top: calc(var(--nav-height) + var(--space-xl));
+            padding-bottom: var(--space-2xl);
             min-height: 100vh;
         }
 
-        header {
-            margin-bottom: 60px;
+        .post-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
         }
 
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+        /* Quest Header */
+        .quest-header-card {
+            background: linear-gradient(145deg, #f4e4bc 0%, #e8d4a8 100%);
+            border: 4px solid #c9a86c;
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            position: relative;
+            box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
         }
 
-        header h1 a {
-            color: #4a9eff;
-            text-decoration: none;
+        .quest-header-card::before {
+            content: 'QUEST LOG';
+            position: absolute;
+            top: -12px;
+            left: var(--space-lg);
+            background: #8b4513;
+            color: #f4e4bc;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: var(--space-xs) var(--space-md);
         }
 
-        nav {
-            font-size: 1.4em;
-            color: #6b8cae;
-            margin-bottom: 0;
-        }
-
-        nav a {
-            color: #5eb3f6;
-            text-decoration: none;
-            transition: color 0.2s ease;
-            margin-right: 20px;
-        }
-
-        nav a:hover {
-            color: #00d4ff;
-        }
-
-        article {
-            margin-bottom: 40px;
-        }
-
-        .post-header {
-            margin-bottom: 50px;
+        .quest-status-badge {
+            display: inline-block;
+            background: var(--accent-green);
+            color: var(--bg-dark);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
+            padding: var(--space-xs) var(--space-sm);
+            margin-bottom: var(--space-md);
         }
 
         .post-title {
-            font-size: 2.8em;
-            color: #e0e0e0;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            color: #3d2914;
             font-weight: 700;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
+            margin-bottom: var(--space-md);
+            line-height: 1.4;
+        }
+
+        @media (min-width: 768px) {
+            .post-title {
+                font-size: 2rem;
+            }
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
         }
 
         .post-date {
-            font-size: 1.2em;
-            color: #ffffff;
-            font-style: italic;
-            font-weight: 300;
+            font-family: 'VT323', monospace;
+            font-size: 1.25rem;
+            color: #6b4423;
+        }
+
+        .post-author {
+            font-family: 'VT323', monospace;
+            font-size: 1.25rem;
+            color: #8b4513;
+        }
+
+        /* Post Content */
+        .post-content-wrapper {
+            background: var(--bg-card);
+            border: 3px solid var(--bg-light);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
         }
 
         .post-content {
-            font-size: 1.15em;
-            line-height: 2.0;
-            color: #ffffff;
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            line-height: 1.9;
+            color: var(--text-primary);
         }
 
         .post-content h1,
         .post-content h2,
         .post-content h3,
         .post-content h4 {
-            color: #ffffff;
-            margin-top: 2em;
-            margin-bottom: 0.8em;
-            font-weight: 600;
+            font-family: 'Press Start 2P', cursive;
+            color: var(--accent-cyan);
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-md);
+            line-height: 1.5;
         }
 
-        .post-content h1 {
-            font-size: 2.2em;
-        }
-
-        .post-content h2 {
-            font-size: 1.8em;
-        }
-
-        .post-content h3 {
-            font-size: 1.4em;
-        }
+        .post-content h1 { font-size: 1rem; }
+        .post-content h2 { font-size: 0.875rem; }
+        .post-content h3 { font-size: 0.75rem; }
+        .post-content h4 { font-size: 0.625rem; }
 
         .post-content p {
-            margin-bottom: 1.8em;
-            line-height: 2.0;
+            margin-bottom: var(--space-lg);
         }
 
         .post-content strong {
+            color: var(--accent-yellow);
             font-weight: 700;
-            font-style: italic;
         }
 
         .post-content em {
             font-style: italic;
+            color: var(--text-secondary);
         }
 
         .post-content a {
-            color: #5eb3f6;
+            color: var(--accent-cyan);
             text-decoration: underline;
-            transition: color 0.2s ease;
+            text-underline-offset: 3px;
         }
 
         .post-content a:hover {
-            color: #00d4ff;
+            color: var(--accent-yellow);
         }
 
         .post-content ul,
         .post-content ol {
-            margin-left: 2em;
-            margin-bottom: 1.8em;
+            margin-left: var(--space-xl);
+            margin-bottom: var(--space-lg);
         }
 
         .post-content li {
-            margin-bottom: 0.5em;
+            margin-bottom: var(--space-sm);
+            position: relative;
+        }
+
+        .post-content ul li::marker {
+            color: var(--accent-cyan);
         }
 
         .post-content code {
-            background-color: rgba(100, 120, 140, 0.25);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95em;
-            color: #5eb3f6;
+            background: var(--bg-medium);
+            color: var(--accent-green);
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
         }
 
         .post-content pre {
-            background-color: rgba(100, 120, 140, 0.25);
-            padding: 20px;
-            border-radius: 8px;
+            background: var(--bg-medium);
+            border: 2px solid var(--bg-light);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
             overflow-x: auto;
-            margin-bottom: 1.8em;
-            line-height: 1.6;
+            margin-bottom: var(--space-lg);
         }
 
         .post-content pre code {
             background: none;
             padding: 0;
+            color: var(--text-primary);
         }
 
         .post-content blockquote {
-            border-left: 4px solid #5eb3f6;
-            padding-left: 25px;
-            margin-left: 0;
-            margin-bottom: 1.8em;
+            border-left: 4px solid var(--accent-yellow);
+            padding-left: var(--space-lg);
+            margin: var(--space-lg) 0;
             font-style: italic;
-            color: #b3d4ff;
+            color: var(--text-secondary);
         }
 
         .post-content img {
             max-width: 100%;
-            width: 100%;
-            height: auto;
-            border-radius: 0px;
-            margin: 2.5em 0;
-            display: block;
+            border-radius: var(--radius-md);
+            margin: var(--space-xl) 0;
+            border: 3px solid var(--bg-light);
         }
 
-        .back-link {
-            margin-top: 60px;
-            padding-top: 30px;
-            border-top: 1px solid #333;
+        .post-content hr {
+            border: none;
+            height: 4px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--bg-light) 0px,
+                var(--bg-light) 8px,
+                transparent 8px,
+                transparent 16px
+            );
+            margin: var(--space-xl) 0;
         }
 
-        .back-link a {
-            color: #5eb3f6;
+        /* Quest Complete Banner */
+        .quest-complete {
+            text-align: center;
+            padding: var(--space-xl);
+            margin-top: var(--space-xl);
+            border-top: 4px solid var(--bg-light);
+        }
+
+        .quest-complete-badge {
+            display: inline-block;
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.75rem;
+            padding: var(--space-md) var(--space-xl);
+            margin-bottom: var(--space-md);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .quest-complete-text {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Back Link */
+        .back-nav {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-xl);
+            border-top: 3px solid var(--bg-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--bg-light);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.5rem;
             text-decoration: none;
-            transition: color 0.2s ease;
-            font-size: 1.1em;
+            transition: all 0.2s ease;
         }
 
-        .back-link a:hover {
-            color: #00d4ff;
+        .back-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
         }
 
-        .loading {
-            color: #6b8cae;
-            font-style: italic;
+        /* Loading State */
+        .post-loading {
+            text-align: center;
+            padding: var(--space-2xl);
+        }
+
+        .post-loading-text {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .post-loading-spinner {
+            width: 50px;
+            height: 50px;
+            margin: var(--space-lg) auto;
+            border: 4px solid var(--bg-light);
+            border-top-color: var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Error State */
+        .post-error {
+            text-align: center;
+            padding: var(--space-2xl);
+        }
+
+        .post-error-icon {
+            font-size: 4rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .post-error-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
+            color: var(--health-red);
+            margin-bottom: var(--space-md);
+        }
+
+        .post-error-text {
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
         }
     </style>
 </head>
 <body>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header>
-        <h1><a href="index.html">Shreshth Saride</a></h1>
-        <nav>
-            <a href="index.html">home</a>
-            <a href="blog.html">blog</a>
-            <a href="timeline.html">timeline</a>
-        </nav>
-    </header>
-
-    <article id="post-article">
-        <div class="post-header">
-            <h2 class="post-title loading">Loading...</h2>
-            <div class="post-date loading">Please wait</div>
-        </div>
-        <div class="post-content loading">
-            Fetching post content...
-        </div>
-    </article>
-
-    <div class="back-link">
-        <a href="blog.html">← Back to all posts</a>
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
+        <div class="floating-cube"></div>
     </div>
 
+    <!-- Navigation -->
+    <nav class="game-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">S</div>
+                <span class="logo-text">SHRESHTH</span>
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link" data-page="index">ABOUT</a></li>
+                <li><a href="projects.html" class="nav-link" data-page="projects">PROJECTS</a></li>
+                <li><a href="blog.html" class="nav-link" data-page="blog">BLOG</a></li>
+            </ul>
+
+            <div class="nav-stats">
+                <span class="stat-badge">LVL 20</span>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">ABOUT</a></li>
+            <li><a href="projects.html" class="nav-link">PROJECTS</a></li>
+            <li><a href="blog.html" class="nav-link">BLOG</a></li>
+        </ul>
+        <div class="mobile-menu-decor">
+            <p class="pixel-text">time is passing anyway</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="post-page">
+        <div class="post-container">
+            <article id="post-article">
+                <!-- Loading State -->
+                <div class="post-loading">
+                    <div class="post-loading-spinner"></div>
+                    <p class="post-loading-text">Loading quest details...</p>
+                </div>
+            </article>
+
+            <nav class="back-nav" id="back-nav" style="display: none;">
+                <a href="blog.html" class="back-btn">
+                    <span><</span> BACK TO QUESTS
+                </a>
+                <a href="blog.html" class="back-btn">
+                    MORE QUESTS <span>></span>
+                </a>
+            </nav>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/navigation.js"></script>
+
+    <!-- Post Loader Script -->
     <script>
         async function loadPost() {
-            // Get slug from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const slug = urlParams.get('slug');
-            
+            const postArticle = document.getElementById('post-article');
+            const backNav = document.getElementById('back-nav');
+
             if (!slug) {
-                document.getElementById('post-article').innerHTML = `
-                    <div class="post-header">
-                        <h2 class="post-title">Post not found</h2>
-                    </div>
-                    <div class="post-content">
-                        <p>Sorry, this post doesn't exist.</p>
+                postArticle.innerHTML = `
+                    <div class="post-error">
+                        <div class="post-error-icon">&#10060;</div>
+                        <h2 class="post-error-title">QUEST NOT FOUND</h2>
+                        <p class="post-error-text">This quest doesn't exist in our records.</p>
+                        <a href="blog.html" class="game-btn" style="margin-top: var(--space-lg);">RETURN TO QUEST BOARD</a>
                     </div>
                 `;
                 return;
             }
-            
+
             try {
-                // Fetch the post content from GitHub
                 const response = await fetch(`https://raw.githubusercontent.com/Shreshth1x/shreshthsaride-website/main/posts/${slug}.md`);
-                
+
                 if (!response.ok) {
                     throw new Error('Post not found');
                 }
-                
+
                 const content = await response.text();
-                
-                // Parse frontmatter
                 const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-                
+
                 if (!frontmatterMatch) {
                     throw new Error('Invalid post format');
                 }
-                
+
                 const frontmatter = frontmatterMatch[1];
                 const body = frontmatterMatch[2];
-                
-                // Extract title and date
+
                 const titleMatch = frontmatter.match(/title:\s*["']?(.+?)["']?\n/);
                 const dateMatch = frontmatter.match(/date:\s*(.+)/);
-                
-                const title = titleMatch ? titleMatch[1] : 'Untitled';
+
+                const title = titleMatch ? titleMatch[1] : 'Untitled Quest';
                 const date = dateMatch ? new Date(dateMatch[1]) : new Date();
-                
+
                 const formattedDate = date.toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric'
                 });
-                
+
                 // Update page title
-                document.getElementById('post-title').textContent = `${title} - Shreshth's Blog`;
-                
+                document.getElementById('post-title').textContent = `${title} | Shreshth Saride`;
+
                 // Convert markdown to HTML
                 const htmlContent = marked.parse(body);
-                
+
                 // Display post
-                document.getElementById('post-article').innerHTML = `
-                    <div class="post-header">
-                        <h2 class="post-title">${title}</h2>
-                        <div class="post-date">${formattedDate}</div>
-                    </div>
-                    <div class="post-content">
-                        ${htmlContent}
+                postArticle.innerHTML = `
+                    <header class="quest-header-card">
+                        <span class="quest-status-badge">QUEST ACCEPTED</span>
+                        <h1 class="post-title">${title}</h1>
+                        <div class="post-meta">
+                            <span class="post-date">${formattedDate}</span>
+                            <span class="post-author">by Shreshth</span>
+                        </div>
+                    </header>
+
+                    <div class="post-content-wrapper">
+                        <div class="post-content">
+                            ${htmlContent}
+                        </div>
+
+                        <div class="quest-complete">
+                            <span class="quest-complete-badge">QUEST COMPLETE!</span>
+                            <p class="quest-complete-text">Thanks for reading this entry from my adventure log.</p>
+                        </div>
                     </div>
                 `;
-                
+
+                // Show back navigation
+                backNav.style.display = 'flex';
+
             } catch (error) {
                 console.error('Error loading post:', error);
-                document.getElementById('post-article').innerHTML = `
-                    <div class="post-header">
-                        <h2 class="post-title">Error loading post</h2>
-                    </div>
-                    <div class="post-content">
-                        <p>Sorry, we couldn't load this post. It may not exist or there was an error fetching it.</p>
+                postArticle.innerHTML = `
+                    <div class="post-error">
+                        <div class="post-error-icon">&#9888;</div>
+                        <h2 class="post-error-title">QUEST FAILED</h2>
+                        <p class="post-error-text">We couldn't load this quest. The scroll may be damaged or missing.</p>
+                        <a href="blog.html" class="game-btn" style="margin-top: var(--space-lg);">RETURN TO QUEST BOARD</a>
                     </div>
                 `;
             }
         }
-        
+
         // Load post when page loads
         loadPost();
     </script>
-
 </body>
 </html>
-
