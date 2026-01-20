@@ -6,6 +6,7 @@ class LoadingScreen {
   constructor() {
     this.screen = document.getElementById('loading-screen');
     this.progressBar = document.getElementById('progress-fill');
+    this.percentElement = document.getElementById('progress-percent');
     this.tipElement = document.getElementById('loading-tip');
     this.pressStart = document.getElementById('press-start');
     this.progress = 0;
@@ -78,6 +79,9 @@ class LoadingScreen {
     if (this.progressBar) {
       this.progressBar.style.width = `${this.progress}%`;
     }
+    if (this.percentElement) {
+      this.percentElement.textContent = `${this.progress}%`;
+    }
   }
 
   onLoadComplete() {
@@ -87,11 +91,6 @@ class LoadingScreen {
     if (this.pressStart) {
       this.pressStart.classList.add('visible');
     }
-
-    // Auto-hide after a moment
-    setTimeout(() => {
-      this.hide();
-    }, 1500);
   }
 
   hide() {

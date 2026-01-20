@@ -1,6 +1,6 @@
 /* ========================================
    LOADING SCREEN
-   Retro Game HUD Style
+   Pixel-Art Style with Background Image
    ======================================== */
 
 .loading-screen {
@@ -10,6 +10,10 @@
   width: 100vw;
   height: 100vh;
   background: var(--bg-dark);
+  background-image: url('../images/loadingscreen.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,74 +32,33 @@
   padding: var(--space-xl);
 }
 
-/* Bouncing Character */
-.loading-character {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto var(--space-xl);
-  position: relative;
-}
-
-.loading-character::before {
-  content: '';
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  background: var(--accent-yellow);
-  border-radius: 4px;
-  animation: character-bounce 0.6s ease-in-out infinite;
-  box-shadow:
-    inset -8px -8px 0 rgba(0,0,0,0.2),
-    inset 8px 8px 0 rgba(255,255,255,0.1);
-}
-
-/* Character shadow */
-.loading-character::after {
-  content: '';
-  position: absolute;
-  bottom: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 8px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 50%;
-  animation: shadow-scale 0.6s ease-in-out infinite;
-}
-
-@keyframes character-bounce {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-30px) scale(1.1, 0.9);
-  }
-}
-
-@keyframes shadow-scale {
-  0%, 100% {
-    transform: translateX(-50%) scale(1);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateX(-50%) scale(0.6);
-    opacity: 0.15;
-  }
-}
-
 /* Title */
 .loading-title {
   font-family: 'Press Start 2P', cursive;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--text-primary);
   margin-bottom: var(--space-xl);
-  text-shadow: 4px 4px 0 var(--shadow-color);
-  letter-spacing: 3px;
+  letter-spacing: 2px;
+  animation: title-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes title-glow {
+  0%, 100% {
+    text-shadow:
+      4px 4px 0 var(--shadow-color),
+      0 0 10px rgba(76, 201, 240, 0.5);
+  }
+  50% {
+    text-shadow:
+      4px 4px 0 var(--shadow-color),
+      0 0 20px rgba(76, 201, 240, 0.8),
+      0 0 30px rgba(83, 232, 55, 0.6);
+  }
 }
 
 @media (min-width: 768px) {
   .loading-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -112,28 +75,24 @@
   }
 }
 
-/* Progress Bar Background */
+/* Progress Bar Background - Pill Shape */
 .progress-bar-bg {
-  height: 32px;
-  background: var(--bg-medium);
-  border: 4px solid var(--accent-cyan);
+  height: 40px;
+  background: #1a2744;
+  border-radius: 25px;
+  border: 3px solid #2a3a5e;
+  padding: 4px;
   position: relative;
   overflow: hidden;
 }
 
-/* Progress Bar Fill */
+/* Progress Bar Fill - Cyan to Green Gradient */
 .progress-bar-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(
-    90deg,
-    var(--accent-green) 0%,
-    var(--accent-yellow) 50%,
-    var(--accent-green) 100%
-  );
-  background-size: 200% 100%;
-  animation: gradient-shift 1s linear infinite;
-  transition: width 0.15s steps(10);
+  border-radius: 20px;
+  background: linear-gradient(90deg, #4cc9f0 0%, #53e837 100%);
+  transition: width 0.15s ease-out;
   position: relative;
 }
 
@@ -146,31 +105,26 @@
   right: 0;
   height: 50%;
   background: rgba(255,255,255,0.2);
+  border-radius: 20px 20px 0 0;
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 200% 0%; }
-}
-
-/* Progress Segments (decorative) */
-.progress-segments {
+/* Percentage Text */
+.progress-percent {
   position: absolute;
-  top: 4px;
-  left: 4px;
-  right: 4px;
-  bottom: 4px;
-  display: flex;
-  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.75rem;
+  color: white;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  z-index: 1;
 }
 
-.progress-segment {
-  flex: 1;
-  border-right: 2px solid rgba(0, 0, 0, 0.2);
-}
-
-.progress-segment:last-child {
-  border-right: none;
+@media (min-width: 768px) {
+  .progress-percent {
+    font-size: 0.875rem;
+  }
 }
 
 /* Loading Text */
@@ -196,17 +150,27 @@
 .loading-tip {
   font-family: 'Space Mono', monospace;
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: #ffffff;
   max-width: 300px;
   margin: 0 auto;
   min-height: 2.5em;
-  transition: opacity 0.3s ease;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.9),
+    -1px -1px 2px rgba(0, 0, 0, 0.7),
+    1px -1px 2px rgba(0, 0, 0, 0.7),
+    -1px 1px 2px rgba(0, 0, 0, 0.7);
+  animation: tip-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tip-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 /* Press Start Text (appears when loaded) */
 .press-start {
   font-family: 'Press Start 2P', cursive;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: var(--accent-yellow);
   margin-top: var(--space-lg);
   animation: press-start-blink 1s ease-in-out infinite;
@@ -214,6 +178,13 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+  .press-start {
+    font-size: 1.25rem;
+  }
 }
 
 .press-start.visible {
@@ -224,40 +195,4 @@
 @keyframes press-start-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
-}
-
-/* Corner decorations (game UI style) */
-.loading-corner {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border: 4px solid var(--accent-cyan);
-}
-
-.loading-corner--tl {
-  top: 20px;
-  left: 20px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.loading-corner--tr {
-  top: 20px;
-  right: 20px;
-  border-left: none;
-  border-bottom: none;
-}
-
-.loading-corner--bl {
-  bottom: 20px;
-  left: 20px;
-  border-right: none;
-  border-top: none;
-}
-
-.loading-corner--br {
-  bottom: 20px;
-  right: 20px;
-  border-left: none;
-  border-top: none;
 }
