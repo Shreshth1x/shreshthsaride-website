@@ -3,6 +3,11 @@
    Pixel-Art Style with Background Image
    ======================================== */
 
+/* Hide loading screen instantly for returning visitors */
+html.visited .loading-screen {
+  display: none;
+}
+
 .loading-screen {
   position: fixed;
   top: 0;
