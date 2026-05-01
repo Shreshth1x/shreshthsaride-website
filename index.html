@@ -96,11 +96,11 @@
             padding: 0 var(--space-md);
         }
 
-        /* Avatar Card - Fixed to bottom */
+        /* Avatar Card - Fixed to bottom; horizontal anchored to the centered 800px content edge */
         .avatar-card {
             position: fixed;
-            bottom: 0;
-            left: -96px;
+            bottom: 80px;
+            left: max(0px, calc(50% - 430px));
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -328,28 +328,25 @@
 
     <!-- Main Content -->
     <main id="main-content" class="about-page">
+        <!-- Avatar Card - fixed to viewport, kept outside any transformed ancestor -->
+        <div class="avatar-card">
+            <p class="character-class">Builder | Creator | Gamer</p>
+            <span class="character-level">LVL 20</span>
+            <div class="sprite-container">
+                <img src="images/sprite.gif?v=2" alt="Shreshth's animated avatar" class="character-sprite">
+            </div>
+        </div>
+
         <!-- Hero Landing Section -->
         <section class="hero-landing">
             <!-- Character Section -->
             <div class="character-section section-animate">
-            <div class="avatar-card">
-                <p class="character-class">Builder | Creator | Gamer</p>
-                <span class="character-level">LVL 20</span>
-                <div class="sprite-container">
-                    <img src="images/sprite.gif?v=2" alt="Shreshth's animated avatar" class="character-sprite">
-                </div>
-            </div>
-
             <div class="character-info">
                 <h1 class="character-name">SHRESHTH SARIDE</h1>
 
                 <ul class="achievements-list">
+                    <li class="achievement-item">- Co-founder @ <a href="https://www.basicsoftware.ai/" target="_blank" rel="noopener noreferrer">basics</a></li>
                     <li class="achievement-item">- <a href="https://www.linkedin.com/in/shreshthsaride/" target="_blank" rel="noopener noreferrer">Finance + Math</a> @ UT Austin</li>
-                    <li class="achievement-item">- Incoming @ JPMorgan</li>
-                    <li class="achievement-item">- Founder & CEO of <a href="https://speakl.ai/" target="_blank" rel="noopener noreferrer">Speakl</a></li>
-                    <li class="achievement-item">- Strategy Intern @ <a href="https://www.ekuso.gg/" target="_blank" rel="noopener noreferrer"> Ekuso</a></li>
-                    <li class="achievement-item">- VP @ <a href="https://www.texasucg.com/" target="_blank" rel="noopener noreferrer"> TexasUCG</a></li>
-                    <li class="achievement-item">- Founder @ Texas Esports</li>
                     <li class="achievement-item">- Competitive Esports Player</li>
                 </ul>
             </div>
