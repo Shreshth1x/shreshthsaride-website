@@ -1,8 +1,11 @@
 (() => {
   const canvas = document.querySelector("#ascii-field");
   const video = document.querySelector("#source-footage");
+  const loopVideo = document.querySelector("#loop-footage");
   const root = document.documentElement;
   const control = document.querySelector(".field-control");
+  const learnMore = document.querySelector("[data-learn-more]");
+  const learnMorePixels = document.querySelector(".learn-more-pixels");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   if (!canvas) {
@@ -20,6 +23,19 @@
     "0000OOOQQQBBBBB88888$$$$$%%%%",
     "SHRESHTHBASICSVLRNTCLUTCHROUND"
   ];
+  const pixelHorizontalAmount = {
+    desktop: 16,
+    tablet: 12,
+    mobileLandscape: 10,
+    mobile: 8
+  };
+  const transitionDuration = 0.045;
+  const pixelStaggerAmount = 0.34;
+  const actionRevealDelay = 2450;
+  const buttonPixelCols = 14;
+  const buttonPixelRows = 5;
+  const frameInterval = 1000 / 24;
+  const loopWarmDelay = 1450;
 
   let width = 0;
   let height = 0;
@@ -36,6 +52,10 @@
   let lastFrame = 0;
   let pointer = { x: 0.5, y: 0.52, tx: 0.5, ty: 0.52 };
   let seeds = [];
+  let activeVideo = video;
+  let actionRevealTimer = 0;
+  let loopWarmTimer = 0;
+  let lastDrawTime = 0;
 
   function clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
@@ -84,6 +104,122 @@
     return { sx, sy, sw, sh };
   }
 
+  function pixelGrid() {
+    const panel = document.querySelector("[data-transition-panel]");
+    if (!panel) return;
+
+    const viewportWidth = window.innerWidth;
+    const isLandscape = window.innerWidth > window.innerHeight;
+
+    let horizontalAmount = pixelHorizontalAmount.desktop;
+
+    if (viewportWidth <= 479) {
+      horizontalAmount = pixelHorizontalAmount.mobile;
+    } else if (viewportWidth <= 767) {
+      horizontalAmount = isLandscape ? pixelHorizontalAmount.mobileLandscape : pixelHorizontalAmount.mobile;
+    } else if (viewportWidth <= 991) {
+      horizontalAmount = pixelHorizontalAmount.tablet;
+    }
+
+    const rect = panel.getBoundingClientRect();
+    const lineSizePx = rect.width / horizontalAmount;
+    const crossAmount = Math.ceil(rect.height / lineSizePx);
+
+    panel.style.flexDirection = "row";
+
+    let lines = panel.querySelectorAll("[data-transition-col]");
+    const lineTemplate = lines[0];
+    const pixelTemplate = lineTemplate?.querySelector("[data-transition-pixel]");
+    if (!lineTemplate || !pixelTemplate) return;
+
+    if (lines.length !== horizontalAmount) {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < horizontalAmount; i++) {
+        frag.appendChild(lineTemplate.cloneNode(false));
+      }
+      panel.replaceChildren(frag);
+      lines = panel.querySelectorAll("[data-transition-col]");
+    }
+
+    lines.forEach((line) => {
+      line.style.flexDirection = "column";
+      line.style.flex = "1 1 auto";
+      line.style.justifyContent = "center";
+
+      const diff = crossAmount - line.childElementCount;
+
+      if (diff > 0) {
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < diff; i++) {
+          frag.appendChild(pixelTemplate.cloneNode(true));
+        }
+        line.appendChild(frag);
+      } else if (diff < 0) {
+        for (let i = diff; i < 0; i++) {
+          line.lastElementChild.remove();
+        }
+      }
+    });
+  }
+
+  function colorForViewportCell(rowIndex, colIndex, totalRows, totalCols) {
+    const sampleCol = clamp(Math.floor((colIndex / Math.max(totalCols - 1, 1)) * (cols - 1)), 0, Math.max(cols - 1, 0));
+    const sampleRow = clamp(Math.floor((rowIndex / Math.max(totalRows - 1, 1)) * (rows - 1)), 0, Math.max(rows - 1, 0));
+    const cell = getFrameCell(sampleRow, sampleCol, lastFrame || performance.now());
+    const highlight = clamp((cell.brightness - 0.68) * 0.42, 0, 0.18);
+    const color = colorMix(cell.color, [255, 250, 238], highlight);
+    return cssColor(color, 1);
+  }
+
+  function paintTransitionPixels() {
+    const lines = [...document.querySelectorAll("[data-transition-col]")];
+    lines.forEach((line, colIndex) => {
+      const pixels = [...line.querySelectorAll("[data-transition-pixel]")];
+      pixels.forEach((pixel, rowIndex) => {
+        pixel.style.backgroundColor = colorForViewportCell(rowIndex, colIndex, pixels.length, lines.length);
+      });
+    });
+  }
+
+  function buildLearnMorePixels() {
+    if (!learnMorePixels || learnMorePixels.childElementCount) return;
+
+    learnMorePixels.style.setProperty("--button-pixel-cols", buttonPixelCols);
+    learnMorePixels.style.setProperty("--button-pixel-rows", buttonPixelRows);
+
+    const frag = document.createDocumentFragment();
+    const count = buttonPixelCols * buttonPixelRows;
+    for (let index = 0; index < count; index += 1) {
+      const col = index % buttonPixelCols;
+      const row = Math.floor(index / buttonPixelCols);
+      const pixel = document.createElement("span");
+      pixel.className = "learn-more-pixel";
+      pixel.style.setProperty("--pixel-delay", `${Math.round(hash(col + 31, row + 19) * 520)}ms`);
+      pixel.style.setProperty("--button-pixel-color", colorForViewportCell(row, col, buttonPixelRows, buttonPixelCols));
+      frag.appendChild(pixel);
+    }
+    learnMorePixels.replaceChildren(frag);
+  }
+
+  function revealLearnMore() {
+    if (!learnMore) return;
+
+    buildLearnMorePixels();
+    root.dataset.actionsReady = "true";
+    learnMore.removeAttribute("tabindex");
+    learnMore.removeAttribute("aria-hidden");
+  }
+
+  function scheduleLearnMoreReveal() {
+    window.clearTimeout(actionRevealTimer);
+    if (!learnMore) return;
+    if (reduceMotion.matches) {
+      revealLearnMore();
+      return;
+    }
+    actionRevealTimer = window.setTimeout(revealLearnMore, actionRevealDelay);
+  }
+
   function seedCells() {
     seeds = Array.from({ length: rows }, (_, row) =>
       Array.from({ length: cols }, (_, col) => {
@@ -101,9 +237,9 @@
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 1.2);
-    cellW = width < 720 ? 5 : 6;
-    cellH = width < 720 ? 7 : 8;
+    dpr = Math.min(window.devicePixelRatio || 1, 1);
+    cellW = width < 720 ? 6 : 7;
+    cellH = width < 720 ? 8 : 9;
     cols = Math.ceil(width / cellW) + 2;
     rows = Math.ceil(height / cellH) + 2;
 
@@ -122,13 +258,14 @@
   }
 
   function videoCanPaint() {
+    const source = activeVideo;
     return (
-      video &&
+      source &&
       sampleCtx &&
       !videoFailed &&
-      video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
-      video.videoWidth > 0 &&
-      video.videoHeight > 0
+      source.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA &&
+      source.videoWidth > 0 &&
+      source.videoHeight > 0
     );
   }
 
@@ -136,8 +273,9 @@
     if (!videoCanPaint()) return false;
 
     try {
-      const { sx, sy, sw, sh } = coverSource(video.videoWidth, video.videoHeight, cols, rows);
-      sampleCtx.drawImage(video, sx, sy, sw, sh, 0, 0, cols, rows);
+      const source = activeVideo;
+      const { sx, sy, sw, sh } = coverSource(source.videoWidth, source.videoHeight, cols, rows);
+      sampleCtx.drawImage(source, sx, sy, sw, sh, 0, 0, cols, rows);
       framePixels = sampleCtx.getImageData(0, 0, cols, rows).data;
       return true;
     } catch (error) {
@@ -265,6 +403,12 @@
   }
 
   function draw(t, force = false) {
+    if (!force && t - lastDrawTime < frameInterval) {
+      if (running) raf = requestAnimationFrame(draw);
+      return;
+    }
+
+    lastDrawTime = t;
     lastFrame = t;
     pointer.x += (pointer.tx - pointer.x) * 0.08;
     pointer.y += (pointer.ty - pointer.y) * 0.08;
@@ -280,10 +424,11 @@
   }
 
   function requestVideoPlay() {
-    if (!video || reduceMotion.matches) return;
-    video.muted = true;
-    video.playsInline = true;
-    const playPromise = video.play();
+    const source = activeVideo;
+    if (!source || reduceMotion.matches) return;
+    source.muted = true;
+    source.playsInline = true;
+    const playPromise = source.play();
     if (playPromise?.catch) {
       playPromise.catch(() => {
         videoFailed = true;
@@ -304,6 +449,29 @@
     cancelAnimationFrame(raf);
   }
 
+  function pauseFootage() {
+    video?.pause();
+    loopVideo?.pause();
+  }
+
+  function switchToLoopVideo() {
+    if (!loopVideo || activeVideo === loopVideo || reduceMotion.matches) return;
+
+    activeVideo = loopVideo;
+    videoFailed = false;
+    framePixels = null;
+    loopVideo.preload = "auto";
+    loopVideo.currentTime = 0;
+    requestVideoPlay();
+    draw(performance.now(), true);
+  }
+
+  function warmLoopVideo() {
+    if (!loopVideo || reduceMotion.matches) return;
+    loopVideo.preload = "auto";
+    loopVideo.load();
+  }
+
   function syncControl() {
     if (!control) return;
     if (reduceMotion.matches) {
@@ -315,6 +483,70 @@
     control.disabled = false;
     control.setAttribute("aria-label", paused ? "Play background animation" : "Pause background animation");
     control.textContent = paused ? "▶" : "⌁";
+  }
+
+  function navigateAfterTransition(destination) {
+    window.location.href = destination;
+  }
+
+  function runPageLeaveAnimation(destination) {
+    sampleVideoFrame();
+    pixelGrid();
+    paintTransitionPixels();
+
+    const transitionPanel = document.querySelector("[data-transition-panel]");
+    const allPixels = transitionPanel?.querySelectorAll("[data-transition-pixel]");
+    const gsap = window.gsap;
+
+    if (reduceMotion.matches || !transitionPanel || !allPixels?.length || !gsap) {
+      navigateAfterTransition(destination);
+      return null;
+    }
+
+    stop();
+    pauseFootage();
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        navigateAfterTransition(destination);
+      }
+    });
+
+    tl.set(transitionPanel, {
+      opacity: 1,
+      pointerEvents: "none"
+    }, 0);
+
+    tl.set(allPixels, {
+      opacity: 0
+    }, 0);
+
+    tl.to(allPixels, {
+      opacity: 1,
+      duration: transitionDuration,
+      ease: "none",
+      stagger: {
+        amount: pixelStaggerAmount,
+        from: "random"
+      }
+    }, 0);
+
+    return tl;
+  }
+
+  function handleLearnMoreClick(event) {
+    const destination = learnMore?.href;
+    if (learnMore?.dataset.transitioning === "true") {
+      event.preventDefault();
+      return;
+    }
+    if (!destination) return;
+
+    event.preventDefault();
+    learnMore.dataset.transitioning = "true";
+    learnMore.classList.add("is-transitioning");
+    learnMore.setAttribute("aria-disabled", "true");
+    runPageLeaveAnimation(destination);
   }
 
   window.addEventListener("resize", resize, { passive: true });
@@ -332,7 +564,7 @@
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       stop();
-      video?.pause();
+      pauseFootage();
     } else {
       requestVideoPlay();
       start();
@@ -345,36 +577,51 @@
     syncControl();
     if (paused) {
       stop();
-      video?.pause();
+      pauseFootage();
     } else {
       requestVideoPlay();
       start();
     }
   });
 
-  video?.addEventListener("loadeddata", () => {
+  learnMore?.addEventListener("click", handleLearnMoreClick);
+
+  function handleVideoLoaded(event) {
+    if (event.currentTarget !== activeVideo) return;
     videoFailed = false;
     sampleVideoFrame();
     draw(performance.now(), true);
     start();
-  });
+  }
 
-  video?.addEventListener("error", () => {
+  function handleVideoError(event) {
+    if (event.currentTarget !== activeVideo) return;
     videoFailed = true;
     draw(performance.now(), true);
-  });
+  }
+
+  video?.addEventListener("loadeddata", handleVideoLoaded);
+  loopVideo?.addEventListener("loadeddata", handleVideoLoaded);
+  video?.addEventListener("ended", switchToLoopVideo);
+  video?.addEventListener("error", handleVideoError);
+  loopVideo?.addEventListener("error", handleVideoError);
 
   reduceMotion.addEventListener("change", () => {
     stop();
-    if (reduceMotion.matches) video?.pause();
+    if (reduceMotion.matches) pauseFootage();
     else requestVideoPlay();
     syncControl();
+    scheduleLearnMoreReveal();
+    window.clearTimeout(loopWarmTimer);
+    loopWarmTimer = window.setTimeout(warmLoopVideo, loopWarmDelay);
     draw(performance.now(), true);
     start();
   });
 
   resize();
   syncControl();
+  scheduleLearnMoreReveal();
+  loopWarmTimer = window.setTimeout(warmLoopVideo, loopWarmDelay);
   requestVideoPlay();
   draw(performance.now(), true);
   start();

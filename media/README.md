@@ -26,3 +26,14 @@ rocket-free, face-free game/tech background cut:
 - Mixkit video 48211, "Close-up of a console controller."
 - Mixkit video 1142, "Microchips, close up."
 - Pexels video 37013442, "Futuristic circuit board animation."
+
+`gaming-ascii-game-intro-sampled.mp4` is a 3-second rapid-cut derivative made
+from ten short segments sampled across `gaming-ascii-game-montage.mp4`.
+
+`gaming-ascii-game-intro-sampled.mp4` and `gaming-ascii-game-loop-sampled.mp4`
+are lower-resolution derivatives used only as the canvas sampling source. They
+reduce decode pressure during the ASCII render while preserving the visual
+sequence.
+
+`shreshth-headshot.jpg` is a cropped, compressed profile image derived from the
+provided speaking photo for the Jun-style second page.

@@ -8,17 +8,19 @@
       content="ASCII landing page for Shreshth Saride, Co-Founder @ Basics."
     />
     <title>Shreshth Saride</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23080503'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-size='20' font-family='monospace' fill='%23fffaf0'%3ES%3C/text%3E%3C/svg%3E"
-    />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Unica+One&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=game-links-3" />
+    <link rel="stylesheet" href="./styles.css?v=motion-10" />
   </head>
   <body>
     <canvas id="ascii-field" aria-hidden="true"></canvas>
@@ -27,17 +29,35 @@
       class="source-footage"
       autoplay
       muted
-      loop
       playsinline
       preload="auto"
       poster="./media/gaming-ascii-game-poster.jpg?v=game-links-3"
       aria-hidden="true"
       tabindex="-1"
     >
-      <source src="./media/gaming-ascii-game-montage.mp4?v=game-links-3" type="video/mp4" />
+      <source src="./media/gaming-ascii-game-intro-sampled.mp4?v=motion-3" type="video/mp4" />
+    </video>
+    <video
+      id="loop-footage"
+      class="source-footage"
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <source src="./media/gaming-ascii-game-loop-sampled.mp4?v=motion-3" type="video/mp4" />
     </video>
     <div class="vignette" aria-hidden="true"></div>
     <div class="scanline" aria-hidden="true"></div>
+    <div data-transition-wrap class="transition" aria-hidden="true">
+      <div data-transition-panel class="transition__panel">
+        <div data-transition-col class="transition__col">
+          <div data-transition-pixel class="transition__pixel"></div>
+        </div>
+      </div>
+    </div>
 
     <main class="stage" aria-labelledby="hero-title">
       <section class="identity" data-ready-item>
@@ -71,6 +91,12 @@
             </svg>
           </a>
         </div>
+        <div class="identity-actions" data-action-reveal>
+          <a class="learn-more-button" href="./about.html" data-learn-more tabindex="-1" aria-hidden="true">
+            <span class="learn-more-label">Learn More</span>
+            <span class="learn-more-pixels" aria-hidden="true"></span>
+          </a>
+        </div>
       </section>
     </main>
 
@@ -78,6 +104,7 @@
       <span aria-hidden="true">⌁</span>
     </button>
 
-    <script src="./backdrop.js?v=game-links-3" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js" defer></script>
+    <script src="./backdrop.js?v=motion-3" defer></script>
   </body>
 </html>
