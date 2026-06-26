@@ -1,0 +1,325 @@
+:root {
+  color-scheme: dark;
+  --paper: #fffaf0;
+  --paper-dim: rgba(255, 250, 240, 0.68);
+  --field: #02040a;
+  --ember: #ff8b2c;
+  --signal: #68e8ff;
+  --mx: 50%;
+  --my: 52%;
+  background: var(--field);
+  color: var(--paper);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--field);
+}
+
+body {
+  min-height: 100svh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+#ascii-field,
+.source-footage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#ascii-field {
+  z-index: 1;
+  background: #02040a;
+}
+
+.source-footage {
+  z-index: 0;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vignette,
+.scanline {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.vignette {
+  background:
+    radial-gradient(circle at var(--mx) var(--my), transparent 0 18rem, rgba(0, 9, 22, 0.12) 35rem, rgba(0, 0, 0, 0.34) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.46), transparent 15%, transparent 78%, rgba(0, 0, 0, 0.3)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.14), transparent 22%, transparent 76%, rgba(0, 0, 0, 0.26));
+}
+
+.scanline {
+  opacity: 0.18;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(180, 231, 255, 0.055) 0,
+      rgba(180, 231, 255, 0.055) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+  mix-blend-mode: overlay;
+}
+
+.stage {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  width: 100%;
+  min-height: 100svh;
+  place-items: center;
+  padding: 2rem;
+}
+
+.identity {
+  display: grid;
+  justify-items: center;
+  width: min(100%, 78rem);
+  margin-top: 1.6rem;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(12px);
+  transition:
+    opacity 1100ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 1100ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-ready="true"] .identity {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+h1 {
+  width: 100%;
+  margin: 0;
+  color: var(--paper);
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 5rem;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  text-transform: none;
+  text-shadow:
+    0 0 8px rgba(255, 250, 240, 0.34),
+    0 0 18px rgba(92, 224, 255, 0.22),
+    0 0 24px rgba(255, 132, 39, 0.16),
+    0 0 42px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+
+.typewriter {
+  position: relative;
+  display: inline-block;
+  width: 15ch;
+  overflow: hidden;
+  border-right: 0.09em solid rgba(255, 250, 240, 0.92);
+  animation:
+    type-name 1550ms steps(15, end) 520ms both,
+    blink-caret 920ms step-end 520ms infinite;
+}
+
+html[data-ready="true"] .typewriter {
+  animation:
+    type-name 1550ms steps(15, end) 120ms both,
+    blink-caret 920ms step-end 120ms infinite;
+}
+
+.identity-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.82rem;
+  margin-top: 1rem;
+  color: rgba(255, 250, 240, 0.78);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.02rem;
+  font-weight: 700;
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 0 14px rgba(0, 0, 0, 0.9);
+}
+
+.role-line {
+  margin: 1.08rem 0 0;
+  color: rgba(255, 250, 240, 0.92);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px rgba(0, 0, 0, 0.96),
+    0 0 22px rgba(0, 0, 0, 0.92),
+    0 0 14px rgba(104, 232, 255, 0.28),
+    0 0 22px rgba(255, 139, 44, 0.18);
+}
+
+.social-link {
+  display: grid;
+  width: 1.45rem;
+  height: 1.45rem;
+  place-items: center;
+  color: rgba(255, 250, 240, 0.76);
+  transition:
+    color 180ms ease,
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.social-link svg {
+  display: block;
+  width: 1.12rem;
+  height: 1.12rem;
+  fill: currentColor;
+}
+
+.social-link:hover,
+.social-link:focus-visible {
+  color: var(--paper);
+  filter:
+    drop-shadow(0 0 9px rgba(104, 232, 255, 0.44))
+    drop-shadow(0 0 14px rgba(255, 139, 44, 0.22));
+  transform: translateY(-1px);
+}
+
+.field-control {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  display: grid;
+  width: 3.1rem;
+  height: 3.1rem;
+  place-items: center;
+  border: 1px solid rgba(255, 250, 240, 0.16);
+  border-right: 0;
+  border-bottom: 0;
+  background: rgba(53, 14, 8, 0.78);
+  color: rgba(255, 250, 240, 0.82);
+  cursor: pointer;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.35rem;
+  line-height: 1;
+  transition:
+    background 180ms ease,
+    color 180ms ease;
+}
+
+.field-control:hover,
+.field-control:focus-visible {
+  background: rgba(83, 24, 14, 0.9);
+  color: var(--paper);
+}
+
+.field-control:disabled {
+  cursor: default;
+  opacity: 0.64;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(255, 250, 240, 0.86);
+  outline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .stage {
+    padding: 1.2rem;
+  }
+
+  .identity {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: 2.24rem;
+  }
+
+  .typewriter {
+    width: 15ch;
+  }
+
+  .role-line {
+    max-width: 24rem;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 380px) {
+  h1 {
+    font-size: 1.86rem;
+  }
+
+  .role-line {
+    font-size: 0.66rem;
+  }
+}
+
+@keyframes type-name {
+  from {
+    width: 0;
+  }
+  to {
+    width: 15ch;
+  }
+}
+
+@keyframes blink-caret {
+  0%,
+  49% {
+    border-color: rgba(255, 250, 240, 0.92);
+  }
+  50%,
+  100% {
+    border-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .identity {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
+  .typewriter {
+    width: 15ch;
+    animation: none;
+  }
+}

@@ -1,377 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shreshth Saride | Finance, Esports, Founder</title>
-    <script>if(sessionStorage.getItem('hasVisited'))document.documentElement.classList.add('visited');</script>
-    <meta name="description" content="Personal website of Shreshth Saride - Finance + Math at UT Austin, Competitive Esports Player, Founder & CEO of Speakl.">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="ASCII landing page for Shreshth Saride, Co-Founder @ Basics."
+    />
+    <title>Shreshth Saride</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23080503'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-size='20' font-family='monospace' fill='%23fffaf0'%3ES%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Unica+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css?v=game-links-3" />
+  </head>
+  <body>
+    <canvas id="ascii-field" aria-hidden="true"></canvas>
+    <video
+      id="source-footage"
+      class="source-footage"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="./media/gaming-ascii-game-poster.jpg?v=game-links-3"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <source src="./media/gaming-ascii-game-montage.mp4?v=game-links-3" type="video/mp4" />
+    </video>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="scanline" aria-hidden="true"></div>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Shreshth Saride | Finance, Esports, Founder">
-    <meta property="og:description" content="Personal website of Shreshth Saride - Finance + Math at UT Austin, Competitive Esports Player, Founder & CEO of Speakl.">
-    <meta property="og:image" content="/apple-touch-icon.png">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:image" content="/apple-touch-icon.png">
-
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/loading.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/animations.css">
-
-    <!-- Netlify Identity -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-    <style>
-        /* ========================================
-           SECTION-BASED BACKGROUND SYSTEM
-           ======================================== */
-
-        /* About Page - Single viewport with background */
-        .about-page {
-            position: relative;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background: url('images/background.jpg') no-repeat center center;
-            background-size: cover;
-        }
-
-        /* ========================================
-           HERO LANDING SECTION (100vh)
-           ======================================== */
-
-        /* Hero section - shows sky/top portion of background */
-        .hero-landing {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding-top: var(--nav-height);
-            padding-bottom: var(--space-md);
-        }
-
-        /* Overlay for hero section text readability */
-        .hero-landing::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(26, 26, 46, 0.2) 0%,
-                rgba(26, 26, 46, 0.15) 50%,
-                rgba(26, 26, 46, 0.35) 100%
-            );
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .hero-landing > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Character Section - centered content */
-        .character-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 var(--space-md);
-        }
-
-        /* Avatar Card - Fixed to bottom; horizontal anchored to the centered 800px content edge */
-        .avatar-card {
-            position: fixed;
-            bottom: 80px;
-            left: max(0px, calc(50% - 430px));
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .avatar-header {
-            margin-bottom: var(--space-sm);
-        }
-
-        .sprite-container {
-            width: 100%;
-            margin: 0 auto;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: -60px;
-        }
-
-        /* Character Sprite GIF */
-        .character-sprite {
-            width: 200px;
-            height: auto;
-            display: block;
-            transform: translateZ(0);
-            will-change: contents;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-            image-rendering: pixelated;
-        }
-
-        .character-class {
-            font-family: 'VT323', monospace;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-xs);
-        }
-
-        .character-level {
-            display: inline-block;
-            background: var(--accent-yellow);
-            color: var(--bg-dark);
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.625rem;
-            padding: var(--space-xs) var(--space-sm);
-            margin-bottom: var(--space-sm);
-        }
-
-        /* Character Info - Right aligned */
-        .character-info {
-            padding: var(--space-sm) 0;
-            text-align: left;
-            margin-left: auto;
-            margin-right: 1%;
-            max-width: 500px;
-            transform: translateX(192px);
-        }
-
-        .character-name {
-            font-size: 2rem;
-            color: var(--text-primary);
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.5), 6px 6px 0 var(--shadow-color);
-            margin-bottom: var(--space-lg);
-            white-space: nowrap;
-            transform: translate(-200px, -50px);
-        }
-
-        @media (min-width: 768px) {
-            .character-name {
-                font-size: 2.5rem;
-            }
-        }
-
-        /* Achievements Section */
-        .achievements-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
-
-        .achievement-item {
-            font-family: 'Space Mono', monospace;
-            font-size: 1.25rem;
-            color: #ffffff;
-            margin-bottom: var(--space-sm);
-            text-shadow: 2px 2px 4px rgba(0,0,0,1), 0 0 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.7);
-            line-height: 1.6;
-        }
-
-        @media (min-width: 768px) {
-            .achievement-item {
-                font-size: 1.5rem;
-            }
-        }
-
-        .achievement-item a {
-            color: var(--accent-cyan);
-            text-decoration: none;
-        }
-
-        .achievement-item a:hover {
-            color: var(--accent-yellow);
-        }
-
-        /* ========================================
-           MOBILE-SPECIFIC HERO ADJUSTMENTS
-           ======================================== */
-
-        /* Tablet and below */
-        @media (max-width: 767px) {
-            .avatar-card {
-                display: none; /* Hide avatar on mobile for cleaner layout */
-            }
-
-            .character-info {
-                transform: none;
-                text-align: center;
-                margin-left: 0;
-                margin-right: 0;
-            }
-
-            .character-name {
-                transform: none;
-                font-size: 1.5rem;
-                white-space: normal;
-            }
-
-            .achievements-list {
-                text-align: left;
-                padding-left: var(--space-md);
-            }
-        }
-
-        /* Small mobile devices */
-        @media (max-width: 480px) {
-            .character-name {
-                font-size: 1.25rem;
-            }
-
-            .achievement-item {
-                font-size: 1rem;
-            }
-
-            .character-section {
-                padding: 0 var(--space-sm);
-            }
-        }
-
-    </style>
-</head>
-<body>
-    <!-- Skip Link -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loading-container">
-            <h1 class="loading-title">Loading Shreshth.exe</h1>
-
-            <div class="progress-bar-container">
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" id="progress-fill"></div>
-                    <span class="progress-percent" id="progress-percent">0%</span>
-                </div>
-            </div>
-
-            <p class="loading-tip" id="loading-tip">TIP: Explore the Projects page!</p>
-            <p class="press-start" id="press-start">PRESS ANY KEY TO START</p>
+    <main class="stage" aria-labelledby="hero-title">
+      <section class="identity" data-ready-item>
+        <h1 id="hero-title" aria-label="Shreshth Saride">
+          <span class="typewriter" aria-hidden="true">Shreshth Saride</span>
+        </h1>
+        <p class="role-line">Co-Founder @ Basics</p>
+        <div class="identity-links" aria-label="Social links">
+          <a
+            class="social-link"
+            href="https://www.linkedin.com/in/shreshthsaride/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="LinkedIn profile"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.34V8.99h3.42v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.28h-.02ZM5.32 7.42a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM3.54 20.45H7.1V8.99H3.54v11.46Z"
+              />
+            </svg>
+          </a>
+          <a
+            class="social-link"
+            href="https://x.com/shreshthsaride"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="X profile"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.14 2.84h3.27l-7.14 8.16 8.4 11.1h-6.58l-5.15-6.73-5.9 6.73H1.76l7.64-8.74L1.34 2.84h6.75l4.65 6.15 5.4-6.15Zm-1.15 17.31h1.81L7.1 4.69H5.16l11.83 15.46Z" />
+            </svg>
+          </a>
         </div>
-    </div>
-
-    <!-- Floating Background Elements -->
-    <div class="floating-elements">
-        <div class="floating-cube"></div>
-        <div class="floating-cube"></div>
-        <div class="floating-cube"></div>
-        <div class="floating-cube"></div>
-        <div class="floating-cube"></div>
-        <div class="floating-cube"></div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="game-nav">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon">S</div>
-                <span class="logo-text">SHRESHTH</span>
-            </a>
-
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link" data-page="index">ABOUT</a></li>
-                <li><a href="projects.html" class="nav-link" data-page="projects">PROJECTS</a></li>
-                <li><a href="blog.html" class="nav-link" data-page="blog">BLOG</a></li>
-            </ul>
-
-            <div class="nav-stats">
-                <span class="stat-badge">LVL 20</span>
-            </div>
-
-            <button class="mobile-menu-btn" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu">
-        <ul class="nav-menu">
-            <li><a href="index.html" class="nav-link">ABOUT</a></li>
-            <li><a href="projects.html" class="nav-link">PROJECTS</a></li>
-            <li><a href="blog.html" class="nav-link">BLOG</a></li>
-        </ul>
-        <div class="mobile-menu-decor">
-            <p class="pixel-text">time is passing anyway</p>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <main id="main-content" class="about-page">
-        <!-- Avatar Card - fixed to viewport, kept outside any transformed ancestor -->
-        <div class="avatar-card">
-            <p class="character-class">Builder | Creator | Gamer</p>
-            <span class="character-level">LVL 20</span>
-            <div class="sprite-container">
-                <img src="images/sprite.gif?v=2" alt="Shreshth's animated avatar" class="character-sprite">
-            </div>
-        </div>
-
-        <!-- Hero Landing Section -->
-        <section class="hero-landing">
-            <!-- Character Section -->
-            <div class="character-section section-animate">
-            <div class="character-info">
-                <h1 class="character-name">SHRESHTH SARIDE</h1>
-
-                <ul class="achievements-list">
-                    <li class="achievement-item">- Co-founder @ <a href="https://www.basicsoftware.ai/" target="_blank" rel="noopener noreferrer">basics</a></li>
-                    <li class="achievement-item">- <a href="https://www.linkedin.com/in/shreshthsaride/" target="_blank" rel="noopener noreferrer">Finance + Math</a> @ UT Austin</li>
-                    <li class="achievement-item">- Competitive Esports Player</li>
-                </ul>
-            </div>
-        </div>
-
-        </section>
-
+      </section>
     </main>
 
-    <!-- Scripts -->
-    <script src="js/loading.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/parallax.js"></script>
+    <button class="field-control" type="button" aria-label="Pause background animation">
+      <span aria-hidden="true">⌁</span>
+    </button>
 
-    <!-- Netlify Identity Redirect -->
-    <script>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
-    </script>
-</body>
+    <script src="./backdrop.js?v=game-links-3" defer></script>
+  </body>
 </html>
